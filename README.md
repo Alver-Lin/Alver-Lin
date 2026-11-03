@@ -1,12 +1,24 @@
 # 👋 你好，我是「Alver-Lin」
+```python
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 
-### 热爱技术，保持好奇，把想法变成作品。
 
-欢迎来到我的 GitHub！这里记录着我的项目、学习笔记和一些有趣的尝试。
+class SoftwareEngineer:
 
-<p align="center">
-  <img src="./profile-banner.svg" width="100%" alt="Hello, world. 保持好奇，持续创造。" />
-</p>
+    def __init__(self):
+        self.name = "Alver-Lin"
+        self.role = "Software Engineer"
+        self.language_spoken = ["zh_CN", "en_US"]
+
+    def say_hi(self):
+        print("Thanks for dropping by, hope you find some of my work interesting.")
+
+
+me = SoftwareEngineer()
+me.say_hi()
+```
+
 
 ## 🧑‍💻 关于我
 
