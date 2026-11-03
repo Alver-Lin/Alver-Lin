@@ -1,6 +1,6 @@
 ![](https://github.com/Alver-Lin/Alver-Lin/blob/main/Assets/pictures/background.png)
 
-
+![About Me](./terminal-green-python.svg)
 ```python
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
