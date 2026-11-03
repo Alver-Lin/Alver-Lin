@@ -1,5 +1,4 @@
-## Hi there 👋
-![](https://github.com/halfrost/halfrost/blob/master/icons/header_2.png)
+
 <!--
 **halfrost/halfrost** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
@@ -14,8 +13,3 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./.github/assets/snake-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="./.github/assets/snake.svg">
-  <img alt="snake" src="./.github/assets/snake.svg">
-</picture>
