@@ -1,15 +1,23 @@
 # 👋你好！
-<!--
-**halfrost/halfrost** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+div align="center">
 
-Here are some ideas to get you started:
+# 👋 你好，我是「你的昵称」
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+### 热爱技术，保持好奇，把想法变成作品。
+
+欢迎来到我的 GitHub！这里记录着我的项目、学习笔记和一些有趣的尝试。
+
+[关于我](#-关于我) · [技术栈](#-技术栈) · [项目展示](#-项目展示) · [联系我](#-联系我)
+
+</div>
+
+---
+
+## 🧑‍💻 关于我
+
+- 🔭 最近在做：**「seeUtoken」**
+- 🌱 正在学习：**「agenttest」**
+- 💡 感兴趣的领域：**「例如：测试开发 / 人工智能 / 开源工具 / agent测评」**
+- 🤝 期待交流：**「agent测评」**
+
+
