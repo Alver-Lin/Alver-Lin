@@ -1,6 +1,10 @@
 ![](https://github.com/Alver-Lin/Alver-Lin/blob/main/Assets/pictures/background.png)
 
+
 ```python
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 class SoftwareEngineer:
     def __init__(self):
         self.name = "Alver-Lin"
