@@ -1,3 +1,3 @@
-![About Me](./terminal-green-python.svg)
+![About Me](./terminal-auto-python.svg)
 
 
