@@ -1,0 +1,189 @@
+name: Refresh profile commit line
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/update-profile.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-commit-line
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch latest 20 days of public commits
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFile, mkdir, writeFile, rename} from 'node:fs/promises';
+          import {pathToFileURL} from 'node:url';
+          
+          const root = pathToFileURL(process.cwd() + '/');
+          const DAY = 86400000;
+          export function localDate(iso) {
+            // Asia/Shanghai has a fixed UTC+08 offset over the current display period.
+            const epoch = Date.parse(iso);
+            if (!Number.isFinite(epoch)) throw new Error('Invalid GitHub commit date.');
+            return new Date(epoch + 8 * 3600000).toISOString().slice(0, 10);
+          }
+          
+          export function aggregate(records, dates, username) {
+            const counts = new Map(dates.map(date => [date, 0]));
+            const seen = new Set();
+            for (const record of records) {
+              if (record.author?.login?.toLowerCase() !== username.toLowerCase()) continue;
+              const date = localDate(record.commit.committer.date);
+              if (!counts.has(date) || seen.has(record.sha)) continue;
+              seen.add(record.sha);
+              counts.set(date, counts.get(date) + 1);
+            }
+            return [...counts].map(([date, commits]) => ({date, commits}));
+          }
+          
+          export async function fetchCommits() {
+            const config = {username:'Alver-Lin', days:20, timezone:'Asia/Shanghai'};
+            const {username, days, timezone} = config;
+            if (!/^[a-z\d](?:[a-z\d-]{0,38})$/i.test(username)) throw new Error('Invalid GitHub username.');
+            if (!Number.isInteger(days) || days < 2 || days > 90 || timezone !== 'Asia/Shanghai') {
+              throw new Error('Use 2–90 days and Asia/Shanghai timezone.');
+            }
+            const now = new Date();
+            const today = localDate(now.toISOString());
+            const startEpoch = Date.parse(`${today}T00:00:00+08:00`) - (days - 1) * DAY;
+            const since = new Date(startEpoch).toISOString();
+            const until = now.toISOString();
+            const dates = Array.from({length:days}, (_,i) => localDate(new Date(startEpoch+i*DAY).toISOString()));
+            const headers = {'User-Agent':'Alver-Lin-profile-card', Accept:'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28'};
+            if (process.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${process.env.GITHUB_TOKEN}`;
+          
+            async function get(path) {
+              const response = await fetch(`https://api.github.com${path}`, {headers, signal:AbortSignal.timeout(30000)});
+              if (response.status === 409 && path.includes('/commits?')) return {items:[], hasNext:false};
+              if (!response.ok) throw new Error(`GitHub HTTP ${response.status}; previous data has been kept.`);
+              const items = await response.json();
+              if (!Array.isArray(items)) throw new Error('Unexpected GitHub API response.');
+              return {items, hasNext:(response.headers.get('link') || '').includes('rel="next"')};
+            }
+            async function allPages(path) {
+              const records = [];
+              for (let page=1;;page++) {
+                const result = await get(`${path}&page=${page}`);
+                records.push(...result.items);
+                if (!result.hasNext) break;
+                if (page === 100) throw new Error('Pagination limit exceeded; refusing incomplete counts.');
+              }
+              return records;
+            }
+            const repos = await allPages(`/users/${encodeURIComponent(username)}/repos?type=owner&per_page=100`);
+            const records = [];
+            for (const repo of repos) {
+              if (repo.private || repo.owner.login.toLowerCase() !== username.toLowerCase()) continue;
+              const query = new URLSearchParams({author:username, sha:repo.default_branch, since, until, per_page:'100'});
+              records.push(...await allPages(`/repos/${encodeURIComponent(username)}/${encodeURIComponent(repo.name)}/commits?${query}`));
+              console.log(`Read ${repo.full_name}`);
+            }
+            const daily = aggregate(records, dates, username);
+            const data = {
+              username, timezone, generatedAt:until, from:dates[0], to:dates.at(-1),
+              scope:'Public owned repositories, default branches, commit-author login filter; deduplicated SHA; grouped by committer date',
+              repositories:repos.filter(r=>!r.private && r.owner.login.toLowerCase()===username.toLowerCase()).map(r=>r.full_name),
+              daily, total:daily.reduce((n,d)=>n+d.commits,0),
+            };
+            await mkdir(new URL('.github/', root), {recursive:true});
+            const path = new URL('.github/profile-commits.json', root);
+            const temp = new URL('.github/profile-commits.json.tmp', root);
+            await writeFile(temp, JSON.stringify(data,null,2)+'\n');
+            await rename(temp,path);
+            console.log(`Saved ${data.total} commits across ${days} days; ${data.from} to ${data.to}.`);
+            return data;
+          }
+          
+          await fetchCommits();
+          NODE
+      - name: Update the image used by README
+        env:
+          UPDATE_PROFILE_RUN: '1'
+        run: |
+          node --input-type=module <<'NODE'
+          import {readFile, writeFile} from 'node:fs/promises';
+          
+          export function updateSvg(svg, data) {
+            const escape = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+            const daily = data.daily;
+            if (!Array.isArray(daily) || daily.length !== 20 || daily.some(d=>!Number.isSafeInteger(d.commits)||d.commits<0)) throw new Error('Expected 20 days of valid commit data.');
+            const total=daily.reduce((n,d)=>n+d.commits,0);
+            if (total !== data.total) throw new Error('Commit total mismatch.');
+            const max=Math.max(1,...daily.map(d=>d.commits));
+            const points=daily.map((d,i)=>[80+i*600/(daily.length-1),278-d.commits/max*76]);
+            const slopes=points.slice(1).map((p,i)=>(p[1]-points[i][1])/(p[0]-points[i][0]));
+            const tangents=points.map((_,i)=>{
+              if(i===0)return slopes[0];
+              if(i===points.length-1)return slopes.at(-1);
+              const a=slopes[i-1],b=slopes[i];return a*b<=0?0:2*a*b/(a+b);
+            });
+            let path=`M${points[0][0].toFixed(2)} ${points[0][1].toFixed(2)}`,length=0;
+            for(let i=0;i<points.length-1;i++) {
+              const a=points[i],b=points[i+1],dx=(b[0]-a[0])/3;
+              const c1=[a[0]+dx,a[1]+tangents[i]*dx],c2=[b[0]-dx,b[1]-tangents[i+1]*dx];
+              path+=` C${c1[0].toFixed(2)} ${c1[1].toFixed(2)} ${c2[0].toFixed(2)} ${c2[1].toFixed(2)} ${b[0].toFixed(2)} ${b[1].toFixed(2)}`;
+              let previous=a;
+              for(let step=1;step<=20;step++) {
+                const t=step/20,u=1-t;
+                const p=[0,1].map(k=>u*u*u*a[k]+3*u*u*t*c1[k]+3*u*t*t*c2[k]+t*t*t*b[k]);
+                length+=Math.hypot(p[0]-previous[0],p[1]-previous[1]);previous=p;
+              }
+            }
+            const cycle=Math.ceil(length)+80;
+            const chartPattern=/<g role="img" aria-labelledby="chart-title chart-desc">[\s\S]*?<\/g>/;
+            const match=svg.match(chartPattern);
+            if(!match)throw new Error('The SVG chart region was not found; image has not been changed.');
+            let paths=0;
+            let chart=match[0].replace(/(<path\b[^>]*?\sd=")[^"]*(")/g,(_,a,b)=>{paths++;return a+path+b;});
+            if(paths!==3)throw new Error('Expected blue line and two pulse paths.');
+            chart=chart.replace(/stroke-dasharray="(42|26) [^"]+"/g,(_,width)=>`stroke-dasharray="${width} ${cycle-Number(width)}"`)
+              .replace(/stroke-dashoffset="[^"]+"/g,`stroke-dashoffset="${cycle}"`)
+              .replace(/cx="[^"]+"/g,`cx="680.00"`)
+              .replace(/cy="[^"]+"/g,`cy="${points.at(-1)[1].toFixed(2)}"`)
+              .replace(/(<title id="chart-title">)[\s\S]*?(<\/title>)/,(_,a,b)=>a+`20-day GitHub commit history: ${total} commits`+b)
+              .replace(/(<desc id="chart-desc">)[\s\S]*?(<\/desc>)/,(_,a,b)=>a+escape('Public owned repositories, default branches, Asia/Shanghai. '+daily.map(d=>`${d.date}: ${d.commits}`).join('; '))+b);
+            const animation=/@keyframes trace\{from\{stroke-dashoffset:[^}]+\}to\{stroke-dashoffset:0\}\}/;
+            if(!animation.test(svg))throw new Error('Pulse animation was not found.');
+            return svg.replace(chartPattern,()=>chart)
+              .replace(animation,`@keyframes trace{from{stroke-dashoffset:${cycle}}to{stroke-dashoffset:0}}`)
+              .replace(/(<desc id="desc">)[\s\S]*?(<\/desc>)/,(_,a,b)=>a+escape(`Adaptive profile card with ${total} actual GitHub commits over 20 days from public owned repositories and default branches. Updated ${data.generatedAt}.`)+b);
+          }
+          
+          if (process.env.UPDATE_PROFILE_RUN === '1') {
+            const data=JSON.parse(await readFile('.github/profile-commits.json','utf8'));
+            const file='terminal-auto-python.svg';
+            const current=await readFile(file,'utf8');
+            const next=updateSvg(current,data);
+            await writeFile(file,next);
+            console.log(`Updated ${file}: ${data.from} to ${data.to}, ${data.total} commits.`);
+          }
+          NODE
+      - name: Commit refreshed profile image
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add terminal-auto-python.svg .github/profile-commits.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore: refresh profile commit line'
+            git pull --rebase
+            git push
+          fi
