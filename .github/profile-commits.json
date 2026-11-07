@@ -1,9 +1,9 @@
 {
   "username": "Alver-Lin",
   "timezone": "Asia/Shanghai",
-  "generatedAt": "2026-11-07T15:44:43.619Z",
-  "from": "2026-10-19",
-  "to": "2026-11-07",
+  "generatedAt": "2026-11-07T20:18:12.246Z",
+  "from": "2026-10-20",
+  "to": "2026-11-08",
   "scope": "Public owned repositories, default branches, commit-author login filter; deduplicated SHA; grouped by committer date",
   "repositories": [
     "Alver-Lin/AgenttestGuide",
@@ -16,10 +16,6 @@
     "Alver-Lin/zhenye-na"
   ],
   "daily": [
-    {
-      "date": "2026-10-19",
-      "commits": 0
-    },
     {
       "date": "2026-10-20",
       "commits": 0
@@ -94,6 +90,10 @@
     },
     {
       "date": "2026-11-07",
+      "commits": 0
+    },
+    {
+      "date": "2026-11-08",
       "commits": 0
     }
   ],
