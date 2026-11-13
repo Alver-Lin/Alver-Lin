@@ -1,7 +1,7 @@
 {
   "username": "Alver-Lin",
   "timezone": "Asia/Shanghai",
-  "generatedAt": "2026-11-13T01:55:05.836Z",
+  "generatedAt": "2026-11-13T09:41:38.487Z",
   "from": "2026-10-25",
   "to": "2026-11-13",
   "scope": "Public owned repositories, default branches, commit-author login filter; deduplicated SHA; grouped by committer date",
@@ -12,9 +12,7 @@
     "Alver-Lin/Database-Compare",
     "Alver-Lin/EchoPlayer",
     "Alver-Lin/fast_lelts",
-    "Alver-Lin/Javis603",
-    "Alver-Lin/seeUtoken",
-    "Alver-Lin/zhenye-na"
+    "Alver-Lin/seeUtoken"
   ],
   "daily": [
     {
