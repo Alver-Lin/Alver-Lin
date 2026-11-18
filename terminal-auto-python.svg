@@ -10,13 +10,7 @@
 @keyframes blink{50%{opacity:0}}
 @keyframes trace{from{stroke-dashoffset:781}to{stroke-dashoffset:0}}
 @keyframes breathe{0%,100%{transform:scale(.7);opacity:.12}50%{transform:scale(1.15);opacity:.35}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important}.pulse{opacity:0}.crawl-silk,.leg-a,.leg-b{animation:none!important}}
-.crawl-silk{fill:none;stroke:#3f9cf0;stroke-width:1.2;stroke-linecap:round;opacity:.28;stroke-dasharray:3600;stroke-dashoffset:3600;animation:silkDraw 60s linear infinite}
-@keyframes silkDraw{0%{stroke-dashoffset:3600}92%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:.08}}
-.leg-a{animation:legA .48s ease-in-out infinite;transform-box:fill-box;transform-origin:0px 0px}
-.leg-b{animation:legB .48s ease-in-out infinite;transform-box:fill-box;transform-origin:0px 0px}
-@keyframes legA{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(10deg)}}
-@keyframes legB{0%,100%{transform:rotate(8deg)}50%{transform:rotate(-10deg)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.pulse{opacity:0}}
 </style>
 <rect x=".5" y=".5" width="999" height="1116" rx="16" fill="#ffffff" data-auto-fill="#0d1522" stroke="#d0d7de" data-auto-stroke="#26394f"/>
 <path d="M0 45H1000" stroke="#d0d7de" data-auto-stroke="#26394f"/>
