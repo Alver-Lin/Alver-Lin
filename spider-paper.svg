@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="920" height="640" viewBox="0 0 920 640" role="img" aria-labelledby="title desc">
+<title id="title">Alver-Lin — spider reading the profile paper</title>
+<desc id="desc">A spider crawls across a research-paper style profile card, highlighting key sentences as it reads.</desc>
+<defs>
+  <linearGradient id="deskGrad" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#1a2740"/>
+    <stop offset="55%" stop-color="#0f1a2e"/>
+    <stop offset="100%" stop-color="#152238"/>
+  </linearGradient>
+  <linearGradient id="paperGrad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#fffdf8"/>
+    <stop offset="100%" stop-color="#f4efe6"/>
+  </linearGradient>
+  <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+    <path d="M28 0H0V28" fill="none" stroke="#2a3d5c" stroke-width="0.6" opacity="0.45"/>
+  </pattern>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <!-- crawl path in absolute SVG coords (paper origin at 70,78) -->
+  <path id="crawlPath" fill="none" d="
+    M 140,242
+    L 720,242
+    L 720,288
+    L 140,288
+    L 140,334
+    L 720,334
+    L 720,380
+    L 140,380
+    L 140,426
+    L 620,426
+  "/>
+</defs>
+<style>
+  .title { font-family: 'Iowan Old Style', Palatino, 'Book Antiqua', Georgia, serif; fill: #1d2433; }
+  .meta { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; fill: #6b7280; }
+  .body { font-family: 'Iowan Old Style', Palatino, Georgia, serif; fill: #2a3142; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #9aa7bd; }
+  .badge { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #c7d2fe; }
+  .hl { fill: #ffe566; opacity: 0; }
+  .hl1 { animation: hl 16s linear infinite; animation-delay: 0.8s; }
+  .hl2 { animation: hl 16s linear infinite; animation-delay: 3.4s; }
+  .hl3 { animation: hl 16s linear infinite; animation-delay: 6.0s; }
+  .hl4 { animation: hl 16s linear infinite; animation-delay: 8.8s; }
+  .hl5 { animation: hl 16s linear infinite; animation-delay: 11.6s; }
+  @keyframes hl {
+    0%, 4% { opacity: 0; }
+    8%, 86% { opacity: 0.55; }
+    94%, 100% { opacity: 0; }
+  }
+  .silk {
+    fill: none; stroke: #c4b5fd; stroke-width: 1.5; stroke-linecap: round;
+    stroke-dasharray: 2200; stroke-dashoffset: 2200;
+    animation: silk 16s linear infinite; filter: url(#glow); opacity: 0.9;
+  }
+  @keyframes silk {
+    0% { stroke-dashoffset: 2200; }
+    88% { stroke-dashoffset: 0; }
+    100% { stroke-dashoffset: 0; opacity: 0.25; }
+  }
+  .legA { animation: stepA 0.3s ease-in-out infinite; transform-origin: 0px 0px; transform-box: fill-box; }
+  .legB { animation: stepB 0.3s ease-in-out infinite; transform-origin: 0px 0px; transform-box: fill-box; }
+  @keyframes stepA { 0%,100% { transform: rotate(-9deg); } 50% { transform: rotate(11deg); } }
+  @keyframes stepB { 0%,100% { transform: rotate(9deg); } 50% { transform: rotate(-11deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .hl, .silk, .legA, .legB { animation: none !important; }
+    .hl { opacity: 0.45; }
+    .silk { stroke-dashoffset: 0; opacity: 0.5; }
+  }
+</style>
+
+<!-- habitat -->
+<rect width="920" height="640" rx="18" fill="url(#deskGrad)"/>
+<rect width="920" height="640" rx="18" fill="url(#grid)" opacity="0.55"/>
+
+<!-- decorative web -->
+<g transform="translate(790,78)" opacity="0.5" fill="none" stroke="#a78bfa" stroke-width="1.1">
+  <circle r="54"/><circle r="38"/><circle r="22"/>
+  <path d="M0,-54 V54 M-54,0 H54 M-38,-38 L38,38 M-38,38 L38,-38"/>
+</g>
+
+<text class="badge" x="28" y="36" font-size="13">spider · reading Alver-Lin</text>
+<text class="badge" x="28" y="56" font-size="11" opacity="0.7">profile paper · Beijing · Capinfo</text>
+
+<!-- paper -->
+<g transform="translate(70,78)">
+  <rect x="8" y="10" width="760" height="500" rx="4" fill="#000" opacity="0.2"/>
+  <rect width="760" height="500" rx="3" fill="url(#paperGrad)" stroke="#e6dcc8" stroke-width="1.2"/>
+  <path d="M48,0 V500" stroke="#f0c4c4" stroke-width="1.2" opacity="0.75"/>
+
+  <text class="title" x="380" y="48" text-anchor="middle" font-size="22" font-weight="700">On Reading Habits of a Software Engineer</text>
+  <text class="meta" x="380" y="72" text-anchor="middle" font-size="12">Alver-Lin · Capinfo · Beijing · 2026</text>
+  <text class="meta" x="380" y="92" text-anchor="middle" font-size="11">Test Development · AI Agents · Open Source Tools</text>
+  <line x1="90" y1="108" x2="670" y2="108" stroke="#d8d0c2" stroke-width="1"/>
+
+  <text class="title" x="70" y="138" font-size="13" font-weight="700">Abstract</text>
+
+  <g class="body" font-size="13.5">
+    <rect class="hl hl1" x="70" y="152" width="430" height="16" rx="2"/>
+    <rect class="hl hl2" x="70" y="198" width="390" height="16" rx="2"/>
+    <rect class="hl hl3" x="70" y="244" width="500" height="16" rx="2"/>
+    <rect class="hl hl4" x="70" y="290" width="320" height="16" rx="2"/>
+    <rect class="hl hl5" x="70" y="336" width="420" height="16" rx="2"/>
+
+    <text x="70" y="164">Alver-Lin builds tools that make AI coding workflows measurable:</text>
+    <text x="70" y="187">token dashboards, agent evaluation guides, and database comparison</text>
+    <text x="70" y="210">utilities for migration confidence. Current focus includes seeUtoken</text>
+    <text x="70" y="233">and AgenttestGuide — practical systems for observing LLM spend and</text>
+    <text x="70" y="256">testing agent behaviour without theatre. Interests span test</text>
+    <text x="70" y="279">development, artificial intelligence, open source tooling, and AI</text>
+    <text x="70" y="302">agent evaluation. Open to discussing how teams score agent quality.</text>
+    <text x="70" y="325">Languages: zh_CN / en_US. Stack: Python, FastAPI, automation, and</text>
+    <text x="70" y="348">whatever makes the next verification loop shorter.</text>
+  </g>
+
+  <text class="title" x="70" y="390" font-size="13" font-weight="700">Keywords</text>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12">
+    <rect x="70" y="404" width="88" height="22" rx="11" fill="#efe8ff"/><text x="114" y="419" text-anchor="middle" fill="#5b21b6">agents</text>
+    <rect x="168" y="404" width="78" height="22" rx="11" fill="#efe8ff"/><text x="207" y="419" text-anchor="middle" fill="#5b21b6">testing</text>
+    <rect x="256" y="404" width="92" height="22" rx="11" fill="#efe8ff"/><text x="302" y="419" text-anchor="middle" fill="#5b21b6">python</text>
+    <rect x="358" y="404" width="110" height="22" rx="11" fill="#efe8ff"/><text x="413" y="419" text-anchor="middle" fill="#5b21b6">evaluation</text>
+    <rect x="478" y="404" width="100" height="22" rx="11" fill="#efe8ff"/><text x="528" y="419" text-anchor="middle" fill="#5b21b6">seeUtoken</text>
+  </g>
+
+  <text font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" x="70" y="470" font-size="11" fill="#8a8172">Page 1 of 1 · spider caught 5 key sentences · silk summary pending</text>
+  <rect x="70" y="482" width="620" height="4" rx="2" fill="#ebe4d8"/>
+  <rect x="70" y="482" width="0" height="4" rx="2" fill="#f5c542">
+    <animate attributeName="width" values="0;130;270;430;530;620;620;0" keyTimes="0;0.12;0.28;0.48;0.68;0.88;0.95;1" dur="16s" repeatCount="indefinite"/>
+  </rect>
+</g>
+
+<!-- silk trail -->
+<path class="silk" d="
+  M 140,242 L 720,242
+  L 720,288 L 140,288
+  L 140,334 L 720,334
+  L 720,380 L 140,380
+  L 140,426 L 620,426
+"/>
+
+<!-- spider with SMIL motion (reliable in GitHub img) -->
+<g id="spider">
+  <animateMotion dur="16s" repeatCount="indefinite" rotate="auto" calcMode="linear" keyPoints="0;0.95;1" keyTimes="0;0.9;1">
+    <mpath xlink:href="#crawlPath"/>
+  </animateMotion>
+
+  <!-- legs A -->
+  <g stroke="#111827" stroke-width="1.8" stroke-linecap="round" fill="none">
+    <g class="legA"><path d="M0,0 L-15,-11 L-27,-3"/></g>
+    <g class="legA" transform="rotate(28)"><path d="M0,0 L-16,-1 L-29,8"/></g>
+    <g class="legA" transform="rotate(58)"><path d="M0,0 L-14,7 L-26,16"/></g>
+    <g class="legA" transform="rotate(88)"><path d="M0,0 L-10,13 L-18,24"/></g>
+  </g>
+  <!-- legs B -->
+  <g stroke="#111827" stroke-width="1.8" stroke-linecap="round" fill="none">
+    <g class="legB"><path d="M0,0 L15,-11 L27,-3"/></g>
+    <g class="legB" transform="rotate(-28)"><path d="M0,0 L16,-1 L29,8"/></g>
+    <g class="legB" transform="rotate(-58)"><path d="M0,0 L14,7 L26,16"/></g>
+    <g class="legB" transform="rotate(-88)"><path d="M0,0 L10,13 L18,24"/></g>
+  </g>
+
+  <ellipse cx="0" cy="0" rx="7.8" ry="5.6" fill="#0f172a"/>
+  <ellipse cx="9.2" cy="-0.8" rx="4.4" ry="3.7" fill="#1f2937"/>
+  <circle cx="11.8" cy="-2.1" r="1.15" fill="#fbbf24"/>
+  <circle cx="11.8" cy="0.5" r="0.95" fill="#f59e0b"/>
+  <path d="M-7,1 Q-16,-10 -24,-16" stroke="#c4b5fd" stroke-width="1.1" fill="none" opacity="0.75"/>
+</g>
+
+<text class="mono" x="28" y="618" font-size="11">inspired by literal web crawlers · SVG animation for GitHub profile</text>
+</svg>
