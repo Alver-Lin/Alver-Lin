@@ -1,9 +1,9 @@
 {
   "username": "Alver-Lin",
   "timezone": "Asia/Shanghai",
-  "generatedAt": "2026-11-24T13:54:57.332Z",
-  "from": "2026-11-05",
-  "to": "2026-11-24",
+  "generatedAt": "2026-11-24T23:31:13.188Z",
+  "from": "2026-11-06",
+  "to": "2026-11-25",
   "scope": "Public owned repositories, default branches, commit-author login filter; deduplicated SHA; grouped by committer date",
   "repositories": [
     "Alver-Lin/AgenttestGuide",
@@ -17,10 +17,6 @@
     "Alver-Lin/seeUtoken"
   ],
   "daily": [
-    {
-      "date": "2026-11-05",
-      "commits": 1
-    },
     {
       "date": "2026-11-06",
       "commits": 0
@@ -95,8 +91,12 @@
     },
     {
       "date": "2026-11-24",
-      "commits": 3
+      "commits": 7
+    },
+    {
+      "date": "2026-11-25",
+      "commits": 0
     }
   ],
-  "total": 68
+  "total": 71
 }
